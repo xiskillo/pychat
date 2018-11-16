@@ -13,7 +13,7 @@ socket_servidor.bind(("localhost",9999))
 socket_servidor.listen(1)
 codigo_cliente=1
 
-mutex=threading.Lock
+mutex=threading.Lock()
 
 
 
@@ -27,7 +27,7 @@ class Cliente (threading.Thread):
     def __run__(self): 
         continuar=True
         self.socket_cliente.send("BIENVENIDOS".encode())
-        while 1:
+        while continuar:
             peticion=self.socket_cliente.recv(1024).decode()
             print ("Cliente "+str(self.codigo_cliente)+str(self.datos_cliente)+ " envio un mensaje")
             print  (peticion)
@@ -36,6 +36,14 @@ class Cliente (threading.Thread):
             if (peticion=="SALIR" or peticion=="salir"):
                 socket_cliente.close()
                 continuar=False
+
+    def añadirLog(self,texto):
+        mutex.acquire() #Mejor antes de llamar a la funcion poner los mutex
+        f=open("log.txt", "a", encoding="utf8")
+        f.write(texto)
+        f.close
+        mutex.release()
+
 
             
 
@@ -49,5 +57,11 @@ while 1:
 
     
     
+    mensaje=socket_cliente.recv(1024).decode()
+
+    print ("mensaje recibido del cliente: ", mensaje)
+
     
+
+    socket_servidor.close
 
