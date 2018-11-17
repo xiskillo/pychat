@@ -10,19 +10,24 @@ socket_cliente.connect(("localhost",9999))
 
 
 def enviarMensaje():
-    aux=1
-    while aux!=0:
-        mensaje = input("Mensaje a enviar >> ")
+    aux=4
+    while (aux>0):
+        mensaje = input("ENVIAR MENSAJE => ")
+        print ("\n")
     
         socket_cliente.send(mensaje.encode())
     
-        if mensaje == "SALIR" or "salir" or "Salir":
+        if (mensaje == "SALIR" or "salir" or "Salir"):
+            print ("DESCONECTANDO")
+            socket_cliente.close()
             break
 
-        aux=0
+      
+          
+        
+        aux=aux-1
     
-    print ("DESCONECTADO")    
-    socket_cliente.close()
+    
 
 def recibirMensaje():
     try:        
@@ -36,9 +41,7 @@ def recibirMensaje():
 
 
 
-
-
+#recibir=threading.Thread(target=recibirMensaje())
+#recibir.start
 enviar=threading.Thread(target=enviarMensaje())
 enviar.start
-recibir=threading.Thread(target=recibirMensaje())
-recibir.start

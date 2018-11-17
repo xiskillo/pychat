@@ -3,7 +3,7 @@ import socket
 import threading
 
 
-print ("hola")
+print ("***BIENVENIDO AL PRGRAMA PyChat***")
 
 #CONTROLARÁ EL CIERRE DEL SERVIDOR (EN EL MENU QUE SE PUEDA ACCEDER CON PERMISO DE ADMIN EN CUALQUIER CLIENTE))
 STOP=1
@@ -11,7 +11,7 @@ STOP=1
 socket_servidor=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 socket_servidor.bind(("localhost",9999))
 socket_servidor.listen(1)
-codigo_cliente=1
+id_cliente=1
 
 mutex=threading.Lock()
 
@@ -22,15 +22,22 @@ class Cliente (threading.Thread):
         threading.Thread.__init__(self)
         self.socket_cliente=socket_cliente
         self.datos_cliente=datos_cliente
-        self.codigo_cliente=id_cliente
+        self.id_cliente=id_cliente
 
     def __run__(self): 
         continuar=True
         self.socket_cliente.send("BIENVENIDOS".encode())
         while continuar:
             peticion=self.socket_cliente.recv(1024).decode()
+            mensaje=socket_cliente.recv(1024).decode()
+            print ("mensaje recibido del cliente: ", mensaje)
             print ("Cliente "+str(self.codigo_cliente)+str(self.datos_cliente)+ " envio un mensaje")
             print  (peticion)
+
+            mutex.acquire()
+            self.añadirLog(peticion)
+            mutex.release()
+
             self.socket_cliente.send("RECIBIDO".encode())
 
             if (peticion=="SALIR" or peticion=="salir"):
@@ -38,11 +45,11 @@ class Cliente (threading.Thread):
                 continuar=False
 
     def añadirLog(self,texto):
-        mutex.acquire() #Mejor antes de llamar a la funcion poner los mutex
+        
         f=open("log.txt", "a", encoding="utf8")
         f.write(texto)
         f.close
-        mutex.release()
+        
 
 
             
@@ -51,14 +58,13 @@ class Cliente (threading.Thread):
 while 1:
     socket_cliente, datos_cliente= socket_servidor.accept()
     print ("conectado "+str(datos_cliente))
-    hilo=Cliente(socket_cliente,datos_cliente,codigo_cliente)
+    hilo=Cliente(socket_cliente,datos_cliente,id_cliente)
     hilo.start
-    codigo_cliente=codigo_cliente+1
+    id_cliente=id_cliente+1
 
     
     
     mensaje=socket_cliente.recv(1024).decode()
-
     print ("mensaje recibido del cliente: ", mensaje)
 
     
