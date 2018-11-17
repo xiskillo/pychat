@@ -10,23 +10,21 @@ socket_cliente.connect(("localhost",9999))
 
 
 def enviarMensaje():
-    aux=4
-    while (aux>0):
-        mensaje = input("ENVIAR MENSAJE => ")
-        print ("\n")
+
+        while True:
+                mensaje = input("ENVIAR MENSAJE => ")
+                print ("\n")    
+                socket_cliente.send(mensaje.encode())
     
-        socket_cliente.send(mensaje.encode())
-    
-        if (mensaje == "SALIR" or "salir" or "Salir"):
-            print ("DESCONECTANDO")
-            socket_cliente.close()
-            break
+                if (mensaje == "SALIR" or mensaje == "Salir" or mensaje == "salir"):
+                        print ("DESCONECTANDO")
+                        socket_cliente.close()
+                        break
+        
 
       
           
         
-        aux=aux-1
-    
     
 
 def recibirMensaje():
