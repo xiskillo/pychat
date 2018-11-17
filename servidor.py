@@ -31,7 +31,7 @@ class Cliente (threading.Thread):
             peticion=self.socket_cliente.recv(1024).decode()
             mensaje=socket_cliente.recv(1024).decode()
             print ("mensaje recibido del cliente: ", mensaje)
-            print ("Cliente "+str(self.codigo_cliente)+str(self.datos_cliente)+ " envio un mensaje")
+            print ("Cliente "+str(self.id_cliente)+str(self.datos_cliente)+ " envio un mensaje")
             print  (peticion)
 
             mutex.acquire()
