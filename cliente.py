@@ -39,7 +39,9 @@ def recibirMensaje():
 
 
 
-#recibir=threading.Thread(target=recibirMensaje())
-#recibir.start
+
 enviar=threading.Thread(target=enviarMensaje())
-enviar.start
+enviar.start()
+
+#recibir=threading.Thread(target=recibirMensaje())
+#recibir.start()
